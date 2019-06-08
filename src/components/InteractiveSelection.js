@@ -4,7 +4,7 @@ import CSSClassBuilder from 'css-class-combiner';
 import AbstractSelection from './AbstractSelection';
 import { getClientY } from '../utils/events';
 import Cursors, { setCursor } from '../utils/cursors';
-import { getSelectionOffsets } from '../utils/area';
+import { getSelectionOffsets, getRootParameterFromRef } from '../utils/area';
 import ResizeCalculator from '../core/resize';
 import DragCalculator from '../core/drag';
 import * as sides from '../utils/sides';
@@ -24,7 +24,7 @@ class InteractiveSelection extends AbstractSelection {
   constructor(props) {
     super(props);
 
-    this.containerParameters = props.containerParameters;
+    this.containerParameters = getRootParameterFromRef(props.containerRef);
     this.innerOffsets = {};
     this.selectionEl = null;
 
@@ -49,10 +49,11 @@ class InteractiveSelection extends AbstractSelection {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { area, containerParameters } = nextProps;
+    const { area, containerRef } = nextProps;
 
-    this.resizeCalculator = ResizeCalculator(containerParameters);
-    this.dragCalculator = DragCalculator(containerParameters);
+    const containerParameters = getRootParameterFromRef(containerRef);
+    this.resizeCalculator = ResizeCalculator(containerRef);
+    this.dragCalculator = DragCalculator(containerRef);
     this.containerParameters = containerParameters;
 
     this.setState({ area });
@@ -150,8 +151,14 @@ class InteractiveSelection extends AbstractSelection {
   }
 
   startDrag(event) {
+    const { onDragStart } = this.props;
+
     setCursor(Cursors.GRABBING);
     this.setState({ isDragging: true });
+
+    if (onDragStart) {
+      onDragStart();
+    }
 
     this.innerOffsets = this.getInnerOffsets(event);
 

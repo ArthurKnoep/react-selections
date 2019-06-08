@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { calculateArea } from '../utils/area';
+import { calculateArea, getRootParameterFromRef } from '../utils/area';
 import '../styles/index.css';
 
 const px = value => `${value}px`;
@@ -31,7 +31,8 @@ class AbstractSelection extends Component {
   }
 
   getMaxPossibleArea() {
-    const { containerParameters } = this.props;
+    const { containerRef } = this.props;
+    const containerParameters = getRootParameterFromRef(containerRef);
     return calculateArea(containerParameters.dimensions);
   }
 

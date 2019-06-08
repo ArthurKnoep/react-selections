@@ -1,6 +1,7 @@
 import ContainerAccessor from './container';
 import SelectionAccessor from './selection';
 import { getClientY } from '../utils/events';
+import { getRootParameterFromRef } from '../utils/area';
 import * as sides from '../utils/sides';
 
 const MIN_WIDTH = 10;
@@ -9,10 +10,11 @@ const replaceSecondWith = replacement => (arg, index) => {
   return index !== 1 ? arg : replacement;
 };
 
-function ResizeCalculator(containerParams) {
-  const container = ContainerAccessor(containerParams);
+function ResizeCalculator(containerRef) {
+  // const container = ContainerAccessor(containerParams);
 
   const calculateRightResize = (event, selectionParams) => {
+    const container = ContainerAccessor(getRootParameterFromRef(containerRef));
     const selection = SelectionAccessor(selectionParams);
 
     const innerX = selection.x() - container.paddingLeft();
@@ -42,6 +44,7 @@ function ResizeCalculator(containerParams) {
   };
 
   const calculateLeftResize = (event, selectionParams) => {
+    const container = ContainerAccessor(getRootParameterFromRef(containerRef));
     const selection = SelectionAccessor(selectionParams);
 
     const innerX = selection.x() - container.paddingLeft();
@@ -76,6 +79,7 @@ function ResizeCalculator(containerParams) {
   };
 
   const calculateBottomResize = (event, selectionParams) => {
+    const container = ContainerAccessor(getRootParameterFromRef(containerRef));
     const selection = SelectionAccessor(selectionParams);
 
     const innerY = selection.y() - container.paddingTop();
@@ -107,6 +111,7 @@ function ResizeCalculator(containerParams) {
   };
 
   const calculateTopResize = (event, selectionParams) => {
+    const container = ContainerAccessor(getRootParameterFromRef(containerRef));
     const selection = SelectionAccessor(selectionParams);
 
     const innerY = selection.y() - container.paddingTop();

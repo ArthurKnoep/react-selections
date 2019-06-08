@@ -19,6 +19,28 @@ export const getSelectionOffsetsFrom = (point) => {
   };
 };
 
+export const getRootParameterFromRef = (ref) => {
+  if (!ref) {
+    return {
+      offsets: {
+        left: 0,
+        top: 0
+      },
+      dimensions: {
+        height: 0,
+        width: 0,
+      }
+    }
+  }
+  return {
+    offsets: getSelectionOffsets(ref),
+    dimensions: {
+      height: ref.clientHeight,
+      width: ref.clientWidth,
+    },
+  };
+}
+
 
 export const getSelectionOffsets = getSelectionOffsetsFrom({
   x: window.pageXOffset,

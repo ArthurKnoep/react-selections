@@ -1,11 +1,11 @@
 import ContainerAccessor from './container';
 import SelectionAccessor from './selection';
 import { getClientY } from '../utils/events';
+import { getRootParameterFromRef } from '../utils/area';
 
-function DragCalculator(containerParams) {
-  const container = ContainerAccessor(containerParams);
-
+function DragCalculator(containerRef) {
   const calculate = (event, selectionParams, innerOffsets) => {
+    const container = ContainerAccessor(getRootParameterFromRef(containerRef))
     const selection = SelectionAccessor(selectionParams);
 
     let x = event.clientX - container.offsetLeft() - innerOffsets.left;

@@ -63,7 +63,7 @@ class SelectionContainer extends Component {
 
     return (
       <SelectionContext.Provider
-        value={{ containerParameters: rootParameters }}
+        value={{ containerRef: this.root }}
       >
         <div
           ref={el => this.root = el}

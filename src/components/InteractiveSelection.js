@@ -36,12 +36,15 @@ class InteractiveSelection extends AbstractSelection {
     };
 
     this.handleMouseDownOnSelection = this.handleMouseDownOnSelection.bind(this);
+    this.handleClickEvt = this.handleClickEvt.bind(this);
     this.handleMouseUp = this.handleMouseUp.bind(this);
     this.dragSelection = this.dragSelection.bind(this);
     this.resizeSelection = this.resizeSelection.bind(this);
 
     this.resizeCalculator = null;
     this.dragCalculator = null;
+
+    this.areaOnStart = null;
   }
 
   componentDidMount() {
@@ -72,6 +75,18 @@ class InteractiveSelection extends AbstractSelection {
     });
   }
 
+  handleClickEvt() {
+    const { area } = this.state;
+    const { onClick } = this.props;
+    if (onClick && 
+      this.areaOnStart.dimensions.height === area.dimensions.height && 
+      this.areaOnStart.dimensions.width === area.dimensions.width &&
+      this.areaOnStart.coordinates.x === area.coordinates.x &&
+      this.areaOnStart.coordinates.y === area.coordinates.y) {
+        onClick();
+      }
+  }
+
   handleMouseUp() {
     const { isDragging } = this.state;
 
@@ -80,12 +95,14 @@ class InteractiveSelection extends AbstractSelection {
     } else {
       this.stopResizeSelection();
     }
+    this.handleClickEvt();
 
     window.removeEventListener('mouseup', this.handleMouseUp);
   }
 
   handleMouseDownOnSelection(event) {
     event.stopPropagation();
+    const { area } = this.state;
 
     if (this.props.frozen) {
       return;
@@ -98,6 +115,7 @@ class InteractiveSelection extends AbstractSelection {
     } else {
       this.startResize(event.target.dataset.side);
     }
+    this.areaOnStart = area;
 
     window.addEventListener('mouseup', this.handleMouseUp);
   }

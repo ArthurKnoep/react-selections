@@ -1,6 +1,6 @@
 {
-  "name": "@madappgang/react-selections",
-  "version": "2.1.9",
+  "name": "@reyah/react-selections",
+  "version": "2.1.11",
   "description": "Interactive area selections for react apps",
   "main": "dist/index.js",
   "scripts": {
